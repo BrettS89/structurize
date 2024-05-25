@@ -1,0 +1,12 @@
+{
+  "port": {
+    "__name": "PORT",
+    "__format": "number"
+  },
+  "host": "HOSTNAME",
+  "authentication": {
+    "secret": "FEATHERS_SECRET"
+  },
+  "jwtSecret": "JWT_SECRET",
+  "mongodb": "MONGO_URI"
+}

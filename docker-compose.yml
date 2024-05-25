@@ -1,0 +1,32 @@
+services:
+  structurize-api:
+    build:
+      context: ./structurize-api
+      dockerfile: Dockerfile.dev
+    container_name: "structurize-api"
+    depends_on:
+      - mongodb
+    env_file:
+      - ./structurize-api/.env
+    ports:
+      - "3040:3040"
+    restart: unless-stopped
+    volumes:
+      - /app/structurize-api/node_modules
+      - .:/app
+
+  mongodb:
+    image: mongo
+    container_name: "mongodb"
+    ports:
+      - "27017-27019:27017-27019"
+    logging:
+      driver: 'none'
+    restart: unless-stopped
+    volumes:
+      - data-mongodb:/data/db
+    command: --quiet --logpath /dev/null 
+
+volumes:
+  data-mongodb:
+  node_modules:
