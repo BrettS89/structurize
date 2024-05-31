@@ -1,0 +1,39 @@
+name: API Deploy Prod
+
+on:
+  workflow_dispatch:
+
+jobs:
+  api-deploy-prod:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./structurize-api
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Install Node Modules
+        run: npm i
+
+      - name: Compile API
+        run: npm run compile
+
+      - name: Docker Login
+        run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 300326566539.dkr.ecr.us-east-1.amazonaws.com
+      
+      - name: Build Docker Image
+        run: docker build -t structurize/api-prod:latest .
+      
+      - name: Tag Docker Image
+        run: docker tag structurize/api-prod:latest 300326566539.dkr.ecr.us-east-1.amazonaws.com/structurize/api-prod:latest
+     
+      - name: Push Docker Image to ECR
+        run: docker push 300326566539.dkr.ecr.us-east-1.amazonaws.com/structurize/api-prod:latest

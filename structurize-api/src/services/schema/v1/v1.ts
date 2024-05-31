@@ -20,6 +20,7 @@ import { authenticate } from '../../../hooks/authenticate'
 import { track } from '../../../hooks/track-resource'
 import { authenticateInternal } from '../../../hooks/authenticate-internal'
 import { authenticateUserOrApiKey } from '../../../hooks/authenticate-user-or-key'
+import { addAccountId } from './hooks'
 
 export * from './v1.class'
 export * from './v1.schema'
@@ -47,7 +48,7 @@ export const schemaV1 = (app: Application) => {
         schemaHooks.validateQuery(schemaV1QueryValidator),
         schemaHooks.resolveQuery(schemaV1QueryResolver)
       ],
-      find: [authenticateUserOrApiKey],
+      find: [authenticateUserOrApiKey, addAccountId],
       get: [authenticate()],
       create: [
         authenticateInternal,

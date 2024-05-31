@@ -1,0 +1,28 @@
+services:
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: 'nginx'
+    ports:
+      - 8000:8000
+
+  structurize-api:
+    build:
+      context: ./structurize-api
+      dockerfile: Dockerfile.dev
+    container_name: "structurize-api"
+    depends_on:
+      - nginx
+    env_file:
+      - ./structurize-api/.prod.env
+    ports:
+      - "3040:3040"
+    restart: unless-stopped
+    volumes:
+      - /app/structurize-api/node_modules
+      - .:/app
+
+volumes:
+  node_modules:

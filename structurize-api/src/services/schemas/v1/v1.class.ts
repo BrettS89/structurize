@@ -42,6 +42,7 @@ export const formatSchemaRecord = (accountId: string, appName: string, json: any
   try {
     ajv.compile(json)
   } catch (e) {
+    console.log(e)
     throw new BadRequest(`invalid json schema format for schema: ${json.title}`)
   }
 
@@ -60,6 +61,8 @@ export class SchemasV1Service<ServiceParams extends SchemasV1Params = SchemasV1P
   constructor(public options: SchemasV1ServiceOptions) {}
 
   async create(data: SchemasV1Data, params?: ServiceParams): Promise<any> {
+    data.accountId = params?.user?.accountId!
+
     if (!data.accountId || !data.appName || !data.jsonArray) {
       throw new BadRequest('missing accountId, appName, or jsonArray')
     }

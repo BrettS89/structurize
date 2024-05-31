@@ -27,3 +27,11 @@ export const validateSchema = (context: HookContext<SchemaV1Service>): HookConte
 
   return context
 }
+
+export const addAccountId = (context: HookContext): HookContext => {
+  if (!context.params.query.accountId) {
+    context.params.query.accountId = context.params.user.accountId
+  }
+
+  return context
+}
