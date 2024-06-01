@@ -9,5 +9,6 @@ const host = app.get('host')
 process.on('unhandledRejection', (reason) => logger.error('Unhandled Rejection %O', reason))
 
 app.listen(port).then(() => {
+  console.log(app.get('mongodb'))
   logger.info(`Feathers app listening on http://${host}:${port}`)
 })
