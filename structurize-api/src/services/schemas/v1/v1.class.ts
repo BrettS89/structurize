@@ -36,7 +36,7 @@ export const formatSchemaRecord = (accountId: string, appName: string, json: any
   })
 
   if (!json.title) {
-    throw new BadRequest('schema must include the title field')
+    throw new BadRequest('all schemas must include the title field')
   }
 
   try {
